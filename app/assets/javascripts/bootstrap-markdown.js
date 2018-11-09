@@ -444,8 +444,20 @@
       } else {
         // Set the content
         var val = this.$textarea.val();
-        if(typeof markdown == 'object') {
-          content = markdown.toHTML(val);
+          if(typeof markdown == 'object') {
+	      var textWithEmptyLines = '';
+	      $.each(val.split('\n'),function(index,line){
+                if( line == '') {
+                    textWithEmptyLines += '  \n'
+                }
+                else {
+                    textWithEmptyLines += line + '  \n';
+                }
+              });
+              content = markdown.toHTML(textWithEmptyLines);
+              content = escape(content);
+              content = content.replace(/%0A/g, " ");
+              content = unescape(content);
         }else if(typeof marked == 'function') {
           content = marked(val);
         } else {
