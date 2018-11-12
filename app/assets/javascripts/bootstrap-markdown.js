@@ -446,13 +446,18 @@
         var val = this.$textarea.val();
           if(typeof markdown == 'object') {
 	      var textWithEmptyLines = '';
-	      $.each(val.split('\n'),function(index,line){
-                if( line == '') {
-                    textWithEmptyLines += '  \n'
-                }
-                else {
-                    textWithEmptyLines += line + '  \n';
-                }
+	      var lines = val.split('\n');
+	      var lines_count = lines.length;
+	      $.each(lines,function(index,line){
+		  if (index + 1 == lines_count){
+                    textWithEmptyLines += line;// do not add linebreak to last line
+                  }
+                  else if( line == '') {
+		      textWithEmptyLines += '  \n'
+                  }
+                  else {
+                      textWithEmptyLines += line + '  \n';
+                  }
               });
               content = markdown.toHTML(textWithEmptyLines);
               content = escape(content);
